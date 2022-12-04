@@ -9,6 +9,7 @@ import seleniumConfig as seleniumConfig
 import reportSerializer as reportSerializer
 import pageChecker as pagechecker
 import S3Manager as S3Manager
+import snsManager as snsManager
 
 
 # ---------------------- Variables --------------------
@@ -105,21 +106,13 @@ def lambda_handler(event, context):
         print(s3FileViewPath)
 
         if fileUploadStatus == SUCCESS and reportSerializingStatus == SUCCESS:
-            snsClient = boto3.client('sns')
-            snsArn = 'arn:aws:sns:us-east-1:045281475231:PevalReportGeneration'
+            snsNotificationStatus = snsManager.snsPublishMsg(subject='Peval - Peroformance Evaluation Report Status',
+                                                             message="Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath)
 
-            message = "Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?site="+s3FileViewPath
-
-            response = snsClient.publish(
-                TopicArn=snsArn,
-                Message=message,
-                Subject='Peval - Peroformance Evaluation Report Status'
-            )
-
-            response = {
-                "statusCode": 201,
-                "body": str(reportSerializer.readReportFile(jsonFileLocation=jsonFileLocation))
-            }
+            if snsNotificationStatus == SUCCESS:
+                response = {
+                    "statusCode": 200,
+                    "body": "Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath}
 
         else:
             response = {
