@@ -8,6 +8,8 @@ import reportSerializer as reportSerializer
 # ------------------------------- IMPORTS ---------------------------
 
 #---------------------- Variables --------------------
+isInLambda = config["global variables"]["isInLambda"]# is the program running in Lambda?
+
 SUCCESS = int(config["global variables"]["SUCCESS"])
 NOT_VISIBLE = int(config["global variables"]["NOT_VISIBLE"])
 FAILURE = int(config["global variables"]["FAILURE"])
@@ -30,7 +32,7 @@ def getOverallPerformance(report):# returns an object containing the overall per
 
 def pagePerformanceChecker(url):
 
-    browserDriver = seleniumConfig.SeleniumInit()  # intialize a browser driver with options
+    browserDriver = seleniumConfig.SeleniumInit(isInLambda=isInLambda)  # intialize a browser driver with options
 
     browserDriver.get(url)
 

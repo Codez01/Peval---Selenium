@@ -29,14 +29,27 @@ def currDateAndTime():
         return "Date And Time Error"
 
 
-def writeToReportFile( pyReport):
+def writeToReportFile( jsonFileLocation , pyReport):
     try:
-        with open('report.json', 'w+') as file:
+        with open(jsonFileLocation , 'w+') as file:
             overall_perf = pageChecker.getOverallPerformance(report = pyReport)# get overall performance from report 
             report = {"overall_performance": overall_perf , "data" : pyReport , "date_time" : currDateAndTime()}
             file.write(json.dumps(report))
             file.close()
             return SUCCESS
+            
+    except Exception as e:
+        print(e)
+        return FAILURE
+
+def readReportFile( jsonFileLocation ):
+    try:
+        with open(jsonFileLocation , 'r') as file:
+            
+            fileData = file.read()
+            file.close()
+            return fileData
+            
     except Exception as e:
         print(e)
         return FAILURE
