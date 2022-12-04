@@ -24,7 +24,7 @@ def GetPythonReport():
 
 def currDateAndTime():
     try:
-        return str(datetime.now().strftime("%d/%m/%Y %H:%M:%S"))
+        return str(datetime.now().strftime("%d/%m/%Y_%H:%M:%S"))
     except Exception as e:
         return "Date And Time Error"
 
