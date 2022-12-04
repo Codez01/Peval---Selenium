@@ -118,6 +118,19 @@ def lambda_handler(event, context):
                     "statusCode": 412,
                     "body": "Report Generation Failed, Please try again later."}
         else:
+
+            snsNotificationStatus = snsManager.snsPublishMsg(subject='Peval - Peroformance Evaluation Report Status',
+                                                             message="Report Generation Failed, Please try again later.")
+
+            if snsNotificationStatus == SUCCESS:
+                response = {
+                    "statusCode": 200,
+                    "body": "Report Generation Failed, Please try again later."}
+            if snsNotificationStatus == FAILURE:
+                response = {
+                    "statusCode": 412,
+                    "body": "Failed to send SNS notification, Please try again later."}
+
             response = {
                 "statusCode": 412,
                 "body": "Selenium operations were not fully completed"
