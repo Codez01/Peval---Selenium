@@ -16,20 +16,20 @@ globalReportPyDicObject = { }
 
 # ------------------------- GENERAL FUNCTIONS  ----------------------
 
-def addDataToPythonReport(url, data):    
+def addDataToPythonReport(url, data):  # add data to the report  
     globalReportPyDicObject[url]=data
            
-def GetPythonReport():
+def GetPythonReport(): # return the python report
     return globalReportPyDicObject
 
-def currDateAndTime():
+def currDateAndTime():# return the current date and time
     try:
-        return str(datetime.now().strftime("%d/%m/%Y_%H:%M:%S"))
+        return str(datetime.now().strftime("%d/%m/%Y-%H:%M:%S"))
     except Exception as e:
         return "Date And Time Error"
 
 
-def writeToReportFile( jsonFileLocation , pyReport):
+def writeToReportFile( jsonFileLocation , pyReport):# write the report to a file
     try:
         with open(jsonFileLocation , 'w+') as file:
             overall_perf = pageChecker.getOverallPerformance(report = pyReport)# get overall performance from report 
@@ -42,7 +42,7 @@ def writeToReportFile( jsonFileLocation , pyReport):
         print(e)
         return FAILURE
 
-def readReportFile( jsonFileLocation ):
+def readReportFile( jsonFileLocation ):# reads the report from a file
     try:
         with open(jsonFileLocation , 'r') as file:
             

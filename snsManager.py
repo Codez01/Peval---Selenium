@@ -15,7 +15,7 @@ FAILURE = int(config["global variables"]["FAILURE"])
 # ---------------------- Variables --------------------
 
 
-def snsPublishMsg(subject, message):
+def snsPublishMsg(subject, message):# a function for publishing a message to sns topic
     try:
         snsClient = boto3.client('sns')
         snsClient.publish(

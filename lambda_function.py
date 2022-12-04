@@ -69,6 +69,7 @@ def main():  # main function
 def lambda_handler(event, context):
 
     try:
+        # get the website's url from http request parameters
         websiteURL = getWebsiteURLFromLambda(event)
         FileNameWithPath = "SitesReport/"+str(websiteURL).strip().replace(
             "/", "-")+"/report_" + reportSerializer.currDateAndTime().replace("/", "-")+".txt"
@@ -84,11 +85,11 @@ def lambda_handler(event, context):
 
     try:
 
-        urls = pagechecker.pageRoutesFinder(
+        urls = pagechecker.pageRoutesFinder(  # get all the urls from the website
             browserDriver=browserDriver,
             url=websiteURL)
 
-        for urlKey in urls:
+        for urlKey in urls:  # loop over the urls in the page
             threadsManager.threadHandler(
                 url=urlKey, function=pagechecker.pagePerformanceChecker, arg1=urlKey)
 
@@ -97,15 +98,18 @@ def lambda_handler(event, context):
         reportSerializingStatus = reportSerializer.writeToReportFile(
             jsonFileLocation=jsonFileLocation, pyReport=reportSerializer.GetPythonReport())  # prepare the report by writing data to JSON file
 
+        # UPLOAD REPORT TO S3
         fileUploadStatus = S3Manager.UploadFileToS3(FileNameWithPath=FileNameWithPath, fileLocation=jsonFileLocation,
                                                     fileName="report_" + reportSerializer.currDateAndTime().replace("/", "-")+".txt")
-
+        # fetch the s3 report file in the bucket
         s3FileViewPath = S3Manager.pathToViewFile(
             FileNameWithPath=FileNameWithPath)
 
         print(s3FileViewPath)
 
         if fileUploadStatus == SUCCESS and reportSerializingStatus == SUCCESS:
+
+            # send a notification to the user
             snsNotificationStatus = snsManager.snsPublishMsg(subject='Peval - Peroformance Evaluation Report Status',
                                                              message="Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath)
 
