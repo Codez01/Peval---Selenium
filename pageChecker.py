@@ -7,32 +7,33 @@ import seleniumConfig as seleniumConfig
 import reportSerializer as reportSerializer
 # ------------------------------- IMPORTS ---------------------------
 
-#---------------------- Variables --------------------
-isInLambda = config["global variables"]["isInLambda"]# is the program running in Lambda?
+# ---------------------- Variables --------------------
+# is the program running in Lambda?
+isInLambda = config["global variables"]["isInLambda"]
 
 SUCCESS = int(config["global variables"]["SUCCESS"])
 NOT_VISIBLE = int(config["global variables"]["NOT_VISIBLE"])
 FAILURE = int(config["global variables"]["FAILURE"])
 
 
+# ---------------------- Variables --------------------
 
-#---------------------- Variables --------------------
-
-def getOverallPerformance(report):# returns an object containing the overall performance of backend and front end average measured in seconds
+# returns an object containing the overall performance of backend and front end average measured in seconds
+def getOverallPerformance(report):
     pyReport = report
-    be_sum=0
-    fe_sum=0
+    be_sum = 0
+    fe_sum = 0
     for url in pyReport:
         be_sum += pyReport[url]["performance"]["be"]
         fe_sum += pyReport[url]["performance"]["fe"]
 
-    return {"be":round(be_sum/len(pyReport) ,2) ,"fe": round(fe_sum/len(pyReport) ,2) } 
+    return {"be": round(be_sum/len(pyReport), 2), "fe": round(fe_sum/len(pyReport), 2)}
 
-        
 
 def pagePerformanceChecker(url):
 
-    browserDriver = seleniumConfig.SeleniumInit(isInLambda=isInLambda)  # intialize a browser driver with options
+    # intialize a browser driver with options
+    browserDriver = seleniumConfig.SeleniumInit(isInLambda=isInLambda)
 
     browserDriver.get(url)
 
@@ -52,13 +53,17 @@ def pagePerformanceChecker(url):
     backendPerformance_calc = responseStart - navigationStart
     frontendPerformance_calc = domComplete - responseStart
 
+    if (backendPerformance_calc < 0 or frontendPerformance_calc < 0):
+        return
+
     print("URL: %s" % url)
     print("Back End: %s" % MillisecToSec(backendPerformance_calc))
     print("Front End: %s \n\n" % MillisecToSec(frontendPerformance_calc))
 
     browserDriver.quit()  # quite the driver --> EXIT
-    
-    reportSerializer.addDataToPythonReport( url=url ,data={ "performance": {"be" : MillisecToSec(backendPerformance_calc) , "fe": MillisecToSec(frontendPerformance_calc)} })
+
+    reportSerializer.addDataToPythonReport(url=url, data={"performance": {"be": MillisecToSec(
+        backendPerformance_calc), "fe": MillisecToSec(frontendPerformance_calc)}})
 
 
 def mainPagePerformanceCheck(browserDriver, url):
@@ -83,11 +88,11 @@ def mainPagePerformanceCheck(browserDriver, url):
 
     print("Main Site  URL: %s" % url)
     print("Main Site Back End: %s" % MillisecToSec(backendPerformance_calc))
-    print("Main Site Front End: %s \n\n" % MillisecToSec(frontendPerformance_calc))
+    print("Main Site Front End: %s \n\n" %
+          MillisecToSec(frontendPerformance_calc))
 
-    reportSerializer.addDataToPythonReport( url=url ,data={ "performance": {"be" : MillisecToSec(backendPerformance_calc) , "fe": MillisecToSec(frontendPerformance_calc)} })
-
-
+    reportSerializer.addDataToPythonReport(url=url, data={"performance": {"be": MillisecToSec(
+        backendPerformance_calc), "fe": MillisecToSec(frontendPerformance_calc)}})
 
 
 def validateLink(url):  # checks whether the given URL is valid or not
@@ -115,11 +120,11 @@ def pageRoutesFinder(browserDriver, url):
     return urls
 
 
-#---------------------- General Functions --------------------'
+# ---------------------- General Functions --------------------'
 
 
 def MillisecToSec(millisec):  # function for converting milliseconds to seconds
     return millisec/1000
 
 
-#---------------------- General Functions --------------------
+# ---------------------- General Functions --------------------
