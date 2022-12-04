@@ -26,7 +26,7 @@ FAILURE = int(config["global variables"]["FAILURE"])
 # function for retrieving the website's url from lambda's function
 def getWebsiteURLFromLambda(event):
     try:
-        return event["website"] if event['website'] != None else FAILURE
+        return event["queryStringParameters"]["website"] if event['queryStringParameters']['website'] != None else FAILURE
 
     except:
         return FAILURE
