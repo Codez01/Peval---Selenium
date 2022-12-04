@@ -5,7 +5,6 @@ import boto3
 # ------------------------------- IMPORTS ---------------------------
 
 
-
 # ---------------------- Variables --------------------
 snsArn = config["sns"]["topicArn"]
 
@@ -19,7 +18,6 @@ FAILURE = int(config["global variables"]["FAILURE"])
 def snsPublishMsg(subject, message):
     try:
         snsClient = boto3.client('sns')
-        snsArn = snsArn
         snsClient.publish(
             TopicArn=snsArn,
             Message=message,
