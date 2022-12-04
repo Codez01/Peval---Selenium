@@ -113,7 +113,10 @@ def lambda_handler(event, context):
                 response = {
                     "statusCode": 200,
                     "body": "Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath}
-
+            if snsNotificationStatus == FAILURE:
+                response = {
+                    "statusCode": 412,
+                    "body": "Report Generation Failed, Please try again later."}
         else:
             response = {
                 "statusCode": 412,
