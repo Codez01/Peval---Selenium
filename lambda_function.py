@@ -111,12 +111,12 @@ def lambda_handler(event, context):
 
             # send a notification to the user
             snsNotificationStatus = snsManager.snsPublishMsg(subject='Peval - Peroformance Evaluation Report Status',
-                                                             message="Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath)
+                                                             message="Report Generated Successfully, View it here: http://peval.cf/report?file="+s3FileViewPath)
 
             if snsNotificationStatus == SUCCESS:
                 response = {
                     "statusCode": 200,
-                    "body": "Report Generated Successfully, View it here: https://peval-website.s3.amazonaws.com/html/report.html?file="+s3FileViewPath}
+                    "body": "Report Generated Successfully, View it here: http://peval.cf/report?file="+s3FileViewPath}
             if snsNotificationStatus == FAILURE:
                 response = {
                     "statusCode": 412,
