@@ -18,7 +18,7 @@ FAILURE = int(config["global variables"]["FAILURE"])
 def snsPublishMsg(subject, message):# a function for publishing a message to sns topic
     try:
         snsClient = boto3.client('sns')
-        snsTopicArn = snsClient.create_topic(Name=snsTopicName)
+        snsTopicArn = snsClient.create_topic(Name=snsTopicName)["TopicArn"]
         snsClient.publish(
             TopicArn=snsTopicArn,
             Message=message,
