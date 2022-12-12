@@ -2,14 +2,14 @@
 I am delighted to introduce Peval, a new venture that aims to assess the front-end and back-end performance of any website from the customer's perspective. Peval not only evaluates the primary website URL, but also every valid URL on the page, providing a comprehensive customer experience.
 
 Some key features of Peval include ->
-The use of Selenium technology to process the website and all customer clicks
-Fast site processing with a threads division algorithm that expedites report generation
-A complete CI/CD plan that keeps the backend and website's code up to date using GitHub actions
-Setup of the entire project using Terraform (with code included)
-REST API implementation for easy report generation via email 
-Free website hosting using S3, Lambda as the backend with payment only for each report generation
-Scalability and the ability to be scaled to multiple AWS regions for multi-regional customer experience reports
-Connection to a domain and route53 hosted zone.
+- The use of Selenium technology to process the website and all customer clicks
+- Fast site processing with a threads division algorithm that expedites report generation
+- A complete CI/CD plan that keeps the backend and website's code up to date using GitHub actions
+- Setup of the entire project using Terraform (with code included)
+- REST API implementation for easy report generation via email 
+- Free website hosting using S3, Lambda as the backend with payment only for each report generation
+- Scalability and the ability to be scaled to multiple AWS regions for multi-regional customer experience reports
+- Connection to a domain and route53 hosted zone.
 
 ##For more information, please visit Peval's website at peval.cf. You can see an example of a Peval site report at
 
